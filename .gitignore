@@ -11,9 +11,14 @@
 # Allow this .gitignore file
 !.gitignore
 
-# Allow modules directory and its contents
+# Allow modules directory and its contents, specifically /modules/ecr
 !modules/
-!modules/**
+!modules/ecr/
+!modules/ecr/**
+
+# Allow envs directory and its contents
+!envs/
+!envs/**
 
 # Exclude Terraform state files and backup
 terraform.tfstate
