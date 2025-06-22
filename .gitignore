@@ -1,0 +1,30 @@
+# Ignore everything by default
+*
+
+# Allow Terraform configuration files
+!*.tf
+!*.tfvars
+
+# Allow documentation
+!README.md
+
+# Allow this .gitignore file
+!.gitignore
+
+# Allow modules directory and its contents
+!modules/
+!modules/**
+
+# Exclude Terraform state files and backup
+terraform.tfstate
+terraform.tfstate.backup
+
+# Exclude Terraform working directory
+.terraform/
+
+# Exclude local system files
+.DS_Store
+
+# Exclude any other secrets or local config
+*.secret
+*.env 

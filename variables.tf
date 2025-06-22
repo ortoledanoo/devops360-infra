@@ -14,4 +14,16 @@ variable "environment" {
   description = "Deployment environment (e.g., dev, staging, prod)."
   type        = string
   default     = "dev"
+}
+
+variable "cognito_secret_name" {
+  description = "Name for the Cognito app client secret in Secrets Manager."
+  type        = string
+  default     = "devops360-dev-cognito-client-secret-test"
+}
+
+variable "cognito_secret_recovery_window_in_days" {
+  description = "Number of days before a deleted secret is permanently removed. Use 0 for immediate deletion in dev environments."
+  type        = number
+  default     = 0
 } 

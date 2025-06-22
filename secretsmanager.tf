@@ -1,5 +1,6 @@
 resource "aws_secretsmanager_secret" "cognito_client_secret" {
-  name = "${var.project_name}-${var.environment}-cognito-client-secret"
+  name                    = var.cognito_secret_name
+  recovery_window_in_days = var.cognito_secret_recovery_window_in_days
   description = "Cognito app client secret for ${var.project_name}"
   tags = {
     Name        = "${var.project_name}-cognito-client-secret"
