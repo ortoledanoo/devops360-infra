@@ -20,10 +20,6 @@
 !envs/
 !envs/**
 
-# Exclude Terraform state files and backup
-terraform.tfstate
-terraform.tfstate.backup
-
 # Exclude Terraform working directory
 .terraform/
 
