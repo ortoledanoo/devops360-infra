@@ -20,25 +20,25 @@ module "s3" {
 }
 
 module "dynamodb" {
-  source                        = "../../modules/dynamodb"
-  table_name                    = "devops360-dev-users"
-  billing_mode                  = "PAY_PER_REQUEST"
-  hash_key                      = "user_id"
-  hash_key_type                 = "S"
+  source                         = "../../modules/dynamodb"
+  table_name                     = "devops360-dev-users"
+  billing_mode                   = "PAY_PER_REQUEST"
+  hash_key                       = "user_id"
+  hash_key_type                  = "S"
   point_in_time_recovery_enabled = true
-  environment                   = "dev"
+  environment                    = "dev"
 }
 
 module "cognito" {
-  source                    = "../../modules/cognito"
-  user_pool_name            = "devops360-dev-userpool"
-  app_client_name           = "devops360-dev-appclient"
-  password_min_length       = 8
+  source                     = "../../modules/cognito"
+  user_pool_name             = "devops360-dev-userpool"
+  app_client_name            = "devops360-dev-appclient"
+  password_min_length        = 8
   password_require_lowercase = true
   password_require_numbers   = true
   password_require_symbols   = false
   password_require_uppercase = true
-  environment               = "dev"
+  environment                = "dev"
 }
 
 module "ecr" {
@@ -127,4 +127,4 @@ module "secretsmanager" {
   recovery_window_in_days = 0
   description             = "Cognito app client secret for devops360"
   tags                    = { Name = "devops360-cognito-client-secret", Environment = "dev" }
-} 
+}

@@ -2,8 +2,8 @@
 # Cognito module: Provisions a Cognito user pool and app client for authentication.
 
 resource "aws_cognito_user_pool" "main" {
-  name = var.user_pool_name
-  alias_attributes = ["email"]
+  name                     = var.user_pool_name
+  alias_attributes         = ["email"]
   auto_verified_attributes = ["email"]
   password_policy {
     minimum_length    = var.password_min_length
@@ -19,8 +19,8 @@ resource "aws_cognito_user_pool" "main" {
 }
 
 resource "aws_cognito_user_pool_client" "main" {
-  name         = var.app_client_name
-  user_pool_id = aws_cognito_user_pool.main.id
+  name            = var.app_client_name
+  user_pool_id    = aws_cognito_user_pool.main.id
   generate_secret = true
   explicit_auth_flows = [
     "ALLOW_USER_PASSWORD_AUTH",

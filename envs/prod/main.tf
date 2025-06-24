@@ -20,25 +20,25 @@ module "s3" {
 }
 
 module "dynamodb" {
-  source                        = "../../modules/dynamodb"
-  table_name                    = "devops360-prod-users"
-  billing_mode                  = "PAY_PER_REQUEST"
-  hash_key                      = "user_id"
-  hash_key_type                 = "S"
+  source                         = "../../modules/dynamodb"
+  table_name                     = "devops360-prod-users"
+  billing_mode                   = "PAY_PER_REQUEST"
+  hash_key                       = "user_id"
+  hash_key_type                  = "S"
   point_in_time_recovery_enabled = true
-  environment                   = "prod"
+  environment                    = "prod"
 }
 
 module "cognito" {
-  source                    = "../../modules/cognito"
-  user_pool_name            = "devops360-prod-userpool"
-  app_client_name           = "devops360-prod-appclient"
-  password_min_length       = 12
+  source                     = "../../modules/cognito"
+  user_pool_name             = "devops360-prod-userpool"
+  app_client_name            = "devops360-prod-appclient"
+  password_min_length        = 12
   password_require_lowercase = true
   password_require_numbers   = true
   password_require_symbols   = true
   password_require_uppercase = true
-  environment               = "prod"
+  environment                = "prod"
 }
 
 module "ecr" {
@@ -127,4 +127,20 @@ module "secretsmanager" {
   recovery_window_in_days = 7
   description             = "Cognito app client secret for devops360"
   tags                    = { Name = "devops360-cognito-client-secret", Environment = "prod" }
+}
+
+module "ecs_app" {
+  source         = "../../modules/ecs"
+  cluster_name   = "devops360-prod-ecs-cluster"
+  app_name       = "devops360-prod-app"
+  image          = module.ecr.repository_url # Use your ECR image URL
+  cpu            = "512"
+  memory         = "1024"
+  container_port = 8000
+  environment_variables = [
+    { name = "ENV", value = "prod" }
+  ]
+  desired_count = 2
+  vpc_id        = module.vpc.vpc_id
+  subnet_ids    = [module.vpc.public_subnet_id]
 } 

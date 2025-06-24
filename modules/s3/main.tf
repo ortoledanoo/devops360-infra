@@ -2,7 +2,7 @@
 # S3 module: Provisions an S3 bucket for uploads, with versioning and public access block.
 
 resource "aws_s3_bucket" "uploads" {
-  bucket = var.bucket_name
+  bucket        = var.bucket_name
   force_destroy = var.force_destroy
   tags = {
     Name        = var.bucket_name
@@ -18,7 +18,7 @@ resource "aws_s3_bucket_versioning" "uploads" {
 }
 
 resource "aws_s3_bucket_public_access_block" "uploads" {
-  bucket = aws_s3_bucket.uploads.id
+  bucket                  = aws_s3_bucket.uploads.id
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
