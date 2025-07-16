@@ -1,29 +1,40 @@
+variable "region" {
+  description = "AWS region"
+  type        = string
+}
+
 variable "cidr_block" {
-  description = "CIDR block for the VPC."
+  description = "VPC CIDR block"
   type        = string
 }
 
-variable "public_subnet_cidr" {
-  description = "CIDR block for the public subnet."
-  type        = string
+variable "public_subnet_cidrs" {
+  description = "List of public subnet CIDRs (must be 2)"
+  type        = list(string)
 }
 
-variable "private_subnet_cidr" {
-  description = "CIDR block for the private subnet."
-  type        = string
-}
-
-variable "availability_zone" {
-  description = "Availability zone for the subnets."
-  type        = string
+variable "private_subnet_cidrs" {
+  description = "List of private subnet CIDRs (must be 2)"
+  type        = list(string)
 }
 
 variable "project_name" {
-  description = "Project name prefix for all resources."
+  description = "Project name"
   type        = string
 }
 
 variable "environment" {
-  description = "Deployment environment (e.g., dev, staging, prod)."
+  description = "Environment name"
   type        = string
+}
+
+variable "cluster_name" {
+  description = "EKS cluster name"
+  type        = string
+}
+
+variable "tags" {
+  description = "Additional tags"
+  type        = map(string)
+  default     = {}
 } 

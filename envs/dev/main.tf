@@ -2,13 +2,15 @@
 # Development environment: Compose all infrastructure modules with dev-specific values.
 
 module "vpc" {
-  source              = "../../modules/vpc"
-  cidr_block          = "10.0.0.0/16"
-  public_subnet_cidr  = "10.0.1.0/24"
-  private_subnet_cidr = "10.0.2.0/24"
-  availability_zone   = "il-central-1a"
-  project_name        = "devops360"
-  environment         = "dev"
+  source               = "../../modules/vpc"
+  region               = "il-central-1"
+  cidr_block           = "10.0.0.0/16"
+  public_subnet_cidrs  = ["10.0.1.0/24", "10.0.2.0/24"]
+  private_subnet_cidrs = ["10.0.101.0/24", "10.0.102.0/24"]
+  project_name         = "devops360"
+  environment          = "dev"
+  cluster_name         = "devops360-dev-eks"
+  tags                 = {}
 }
 
 module "s3" {
@@ -82,7 +84,7 @@ module "ssm_vpc_id" {
 module "ssm_public_subnet_id" {
   source = "../../modules/ssm"
   name   = "/devops360/dev/public_subnet_id"
-  value  = module.vpc.public_subnet_id
+  value  = module.vpc.public_subnet_ids[0]
   type   = "String"
   tags   = { Name = "devops360-public-subnet-id", Environment = "dev" }
 }
@@ -90,7 +92,7 @@ module "ssm_public_subnet_id" {
 module "ssm_private_subnet_id" {
   source = "../../modules/ssm"
   name   = "/devops360/dev/private_subnet_id"
-  value  = module.vpc.private_subnet_id
+  value  = module.vpc.private_subnet_ids[0]
   type   = "String"
   tags   = { Name = "devops360-private-subnet-id", Environment = "dev" }
 }
@@ -127,4 +129,14 @@ module "secretsmanager" {
   recovery_window_in_days = 0
   description             = "Cognito app client secret for devops360"
   tags                    = { Name = "devops360-cognito-client-secret", Environment = "dev" }
+}
+
+module "eks" {
+  source             = "../../modules/eks"
+  cluster_name       = "devops360-dev-eks"
+  cluster_version    = "1.31"
+  instance_types     = ["t3.medium"]
+  vpc_id             = module.vpc.vpc_id
+  subnet_ids         = module.vpc.private_subnet_ids
+  control_plane_subnet_ids = module.vpc.private_subnet_ids
 }
