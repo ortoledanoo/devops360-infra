@@ -37,4 +37,10 @@ variable "tags" {
   description = "Additional tags"
   type        = map(string)
   default     = {}
+}
+
+variable "availability_zones" {
+  description = "List of availability zones to use for subnets"
+  type        = list(string)
+  default     = ["il-central-1a", "il-central-1b"]
 } 

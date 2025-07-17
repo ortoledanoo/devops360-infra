@@ -132,11 +132,14 @@ module "secretsmanager" {
 }
 
 module "eks" {
-  source             = "../../modules/eks"
-  cluster_name       = "devops360-dev-eks"
-  cluster_version    = "1.31"
-  instance_types     = ["t3.medium"]
-  vpc_id             = module.vpc.vpc_id
-  subnet_ids         = module.vpc.private_subnet_ids
+  source                   = "../../modules/eks"
+  cluster_name             = "devops360-dev-eks"
+  cluster_version          = "1.31"
+  instance_types           = ["t3.medium"]
+  vpc_id                   = module.vpc.vpc_id
+  subnet_ids               = module.vpc.private_subnet_ids
   control_plane_subnet_ids = module.vpc.private_subnet_ids
+  min_size                 = 2
+  max_size                 = 4
+  desired_size             = 2
 }
