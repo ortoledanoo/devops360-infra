@@ -24,6 +24,7 @@
 
 # Exclude Terraform working directory
 .terraform/
+.terraform.lock.hcl
 
 # Exclude local system files
 .DS_Store
