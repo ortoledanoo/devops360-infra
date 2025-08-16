@@ -1,5 +1,7 @@
 # Ignore everything by default
 *
+# Allow All Directories
+!*/
 
 # Allow Terraform configuration files
 !*.tf
@@ -10,13 +12,6 @@
 
 # Allow this .gitignore file
 !.gitignore
-
-# Allow modules directory and its contents, specifically /modules/ecr
-!modules/
-!modules/ecr/
-!modules/ecr/**
-!modules/eks/
-!modules/eks/**
 
 # Allow envs directory and its contents
 !envs/

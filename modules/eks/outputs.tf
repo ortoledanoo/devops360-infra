@@ -22,3 +22,8 @@ output "cluster_addons" {
   description = "Map of cluster addon attributes"
   value       = module.eks.cluster_addons
 } 
+
+output "oidc_provider_arn" {
+  description = "ARN of the OIDC Provider"
+  value       = module.eks.oidc_provider_arn
+}
