@@ -45,3 +45,9 @@ variable "desired_size" {
   type        = number
   default     = 2
 }
+
+variable "ami_type" {
+  description = "The AMI Type for Managed Node Group"
+  type        = string
+}
+

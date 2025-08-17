@@ -1,5 +1,5 @@
-resource "aws_ecr_repository" "this" {
-  name                 = var.name
+resource "aws_ecr_repository" "devops360-ecr" {
+  name                 = var.ecr_name
   image_tag_mutability = "MUTABLE"
   force_delete         = true
 
@@ -9,5 +9,5 @@ resource "aws_ecr_repository" "this" {
 }
 
 output "repository_url" {
-  value = aws_ecr_repository.this.repository_url
+  value = aws_ecr_repository.devops360-ecr.repository_url
 } 
