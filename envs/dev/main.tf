@@ -159,9 +159,14 @@ module "alb" {
 module "k8s_app" {
   source = "../../modules/k8s-app"
 
-  app_name     = "weather-app"
-  service_type = "NodePort"
-  image_name   = "ortoledanoo/weather-app:latest"
+  app_name                     = "devops360-app"
+  service_type                 = "NodePort"
+  image_name                   = "ortoledanoo/devops360-app:latest"
+  dynamodb_table_name          = module.dynamodb.table_name
+  s3_bucket_name               = module.s3.bucket_name
+  cognito_user_pool_id         = module.cognito.user_pool_id
+  cognito_user_pool_client_id  = module.cognito.user_pool_client_id
+  oidc_provider_arn            = module.eks.oidc_provider_arn
 
   depends_on = [module.alb]
 }

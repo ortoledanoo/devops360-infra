@@ -1,6 +1,6 @@
-resource "kubernetes_deployment_v1" "weather_app" {
+resource "kubernetes_deployment_v1" "devops360-deployment" {
   metadata {
-    name = "weather-app-deployment"
+    name = "devops360-deployment"
     labels = {
       app = var.app_name
     }
@@ -23,12 +23,34 @@ resource "kubernetes_deployment_v1" "weather_app" {
       }
 
       spec {
+        service_account_name = kubernetes_service_account.app_service_account.metadata[0].name
+        
         container {
-          name  = "weather-app-container"
+          name  = "devops360-container"
           image = var.image_name
 
           port {
-            container_port = 5000
+            container_port = 8000
+          }
+
+          env {
+            name  = "DYNAMODB_TABLE_NAME"
+            value = var.dynamodb_table_name
+          }
+
+          env {
+            name  = "S3_BUCKET_NAME"
+            value = var.s3_bucket_name
+          }
+
+          env {
+            name  = "COGNITO_USER_POOL_ID"
+            value = var.cognito_user_pool_id
+          }
+
+          env {
+            name  = "COGNITO_USER_POOL_CLIENT_ID"
+            value = var.cognito_user_pool_client_id
           }
         }
       }
@@ -36,9 +58,9 @@ resource "kubernetes_deployment_v1" "weather_app" {
   }
 }
 
-resource "kubernetes_service_v1" "weather_app" {
+resource "kubernetes_service_v1" "devops360-service" {
   metadata {
-    name = "weather-app-service"
+    name = "devops360-service"
     labels = {
       app = var.app_name
     }
@@ -53,15 +75,15 @@ resource "kubernetes_service_v1" "weather_app" {
 
     port {
       port        = 80
-      target_port = 5000
+      target_port = 8000
       protocol    = "TCP"
     }
   }
 }
 
-resource "kubernetes_ingress_v1" "weather_app" {
+resource "kubernetes_ingress_v1" "devops360-ingress" {
   metadata {
-    name = "weather-app-ingress"
+    name = "devops360-ingress"
     annotations = {
       "kubernetes.io/ingress.class"                          = "alb"
       "alb.ingress.kubernetes.io/scheme"                     = "internet-facing"
