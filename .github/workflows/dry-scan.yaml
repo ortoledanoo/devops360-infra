@@ -1,0 +1,30 @@
+name: terraform-dry-run
+
+on:
+  push:
+    branches: [ "developers" ]
+    paths:
+      - 'terraform/envs/dev/**'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  terraform-dry-run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.5
+
+      - name: Terraform Init
+        working-directory: terraform/envs/dev
+        run: terraform init -upgrade
+
+      - name: Terraform Plan
+        working-directory: terraform/envs/dev
+        run: terraform plan -no-color -input=false -lock-timeout=5m
