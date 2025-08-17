@@ -37,3 +37,8 @@ variable "oidc_provider_arn" {
   description = "OIDC Provider ARN for IRSA"
   type        = string
 }
+
+variable "cognito_secrets_arn" {
+  description = "ARN of the Cognito secrets in Secrets Manager"
+  type        = string
+}

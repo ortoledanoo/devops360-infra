@@ -107,7 +107,7 @@ resource "kubernetes_ingress_v1" "devops360-ingress" {
           
           backend {
             service {
-              name = kubernetes_service_v1.weather_app.metadata[0].name
+              name = kubernetes_service_v1.devops360-service.metadata[0].name
               port {
                 number = 80
               }
