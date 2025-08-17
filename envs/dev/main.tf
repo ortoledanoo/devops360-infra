@@ -124,8 +124,12 @@ module "ssm_ecr_repository_url" {
 # Secrets Manager for Cognito client secret
 module "secretsmanager" {
   source                  = "../../modules/secretsmanager"
-  name                    = "devops360-dev-cognito-client-secret-test"
-  secret_string           = module.cognito.client_secret
+  name                    = "devops360/cognito"
+  secret_string           = jsonencode({
+    COGNITO_APP_CLIENT_SECRET = module.cognito.client_secret
+    COGNITO_USER_POOL_ID     = module.cognito.user_pool_id
+    COGNITO_APP_CLIENT_ID    = module.cognito.user_pool_client_id
+  })
   recovery_window_in_days = 0
   description             = "Cognito app client secret for devops360"
   tags                    = { Name = "devops360-cognito-client-secret", Environment = "dev" }
@@ -166,6 +170,7 @@ module "k8s_app" {
   s3_bucket_name               = module.s3.bucket_name
   cognito_user_pool_id         = module.cognito.user_pool_id
   cognito_user_pool_client_id  = module.cognito.user_pool_client_id
+  cognito_secrets_arn          = module.secretsmanager.secret_arn
   oidc_provider_arn            = module.eks.oidc_provider_arn
 
   depends_on = [module.alb]
