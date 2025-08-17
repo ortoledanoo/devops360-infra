@@ -2,9 +2,8 @@ name: terraform-dry-run
 
 on:
   push:
-    branches: [ "developers" ]
-    paths:
-      - 'terraform/envs/dev/**'
+    branches:
+      - developers
   workflow_dispatch: {}
 
 permissions:
