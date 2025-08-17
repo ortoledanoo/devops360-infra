@@ -5,18 +5,57 @@ This Terraform project provisions all AWS resources required for the DevOps360 a
 ## Directory Structure
 
 ```
-devops360-terraform/
-  main.tf                # Entry point, includes all modules/resources
-  versions.tf            # Terraform and provider version constraints
-  variables.tf           # Input variables for customization
-  outputs.tf             # Outputs for integration and reference
-  vpc.tf                 # VPC, subnets, and networking
-  s3.tf                  # S3 bucket for file uploads
-  dynamodb.tf            # DynamoDB table for user profiles
-  cognito.tf             # Cognito user pool and app client
-  secretsmanager.tf      # Secrets Manager for Cognito client secret
-  ssm.tf                 # SSM Parameter Store integration for outputs
-  README.md              # This file
+/devops360-infra
+├── envs
+│   ├── dev
+│   │   ├── backend.tf
+│   │   ├── main.tf
+│   │   ├── providers.tf
+│   │   ├── terraform.tfvars
+│   │   └── variables.tf
+│   └── prod
+│       ├── backend.tf
+│       ├── main.tf
+│       ├── providers.tf
+│       ├── terraform.tfvars
+│       └── variables.tf
+├── modules
+│   ├── alb
+│   │   ├── main.tf
+│   │   └── variables.tf
+│   ├── cognito
+│   │   ├── main.tf
+│   │   └── variables.tf
+│   ├── dynamodb
+│   │   ├── main.tf
+│   │   └── variables.tf
+│   ├── ecr
+│   │   ├── main.tf
+│   │   └── variables.tf
+│   ├── eks
+│   │   ├── main.tf
+│   │   ├── outputs.tf
+│   │   └── variables.tf
+│   ├── k8s-app
+│   │   ├── main.tf
+│   │   ├── manifests
+│   │   │   └── weather-app.yaml
+│   │   ├── outputs.tf
+│   │   ├── service-account.tf
+│   │   └── variables.tf
+│   ├── s3
+│   │   ├── main.tf
+│   │   └── variables.tf
+│   ├── secretsmanager
+│   │   ├── main.tf
+│   │   └── variables.tf
+│   ├── ssm
+│   │   ├── main.tf
+│   │   └── variables.tf
+│   └── vpc
+│       ├── main.tf
+│       └── variables.tf
+└── README.md
 ```
 
 ## Resources Provisioned
