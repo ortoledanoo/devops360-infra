@@ -3,128 +3,129 @@
 
 module "vpc" {
   source               = "../../modules/vpc"
-  region               = "il-central-1"
-  cidr_block           = "10.0.0.0/16"
-  public_subnet_cidrs  = ["10.0.1.0/24", "10.0.2.0/24"]
-  private_subnet_cidrs = ["10.0.101.0/24", "10.0.102.0/24"]
-  project_name         = "devops360"
-  environment          = "dev"
-  cluster_name         = "devops360-dev-eks"
+  region               = var.region
+  cidr_block           = var.cidr_block
+  public_subnet_cidrs  = var.public_subnet_cidrs
+  private_subnet_cidrs = var.private_subnet_cidrs
+  project_name         = var.project_name
+  environment          = var.environment
+  cluster_name         = var.cluster_name
   tags                 = {}
 }
+# "kubernetes.io/cluster/${var.cluster_name}"
 
 module "s3" {
   source            = "../../modules/s3"
-  bucket_name       = "devops360-dev-uploads"
+  bucket_name       = "${var.project_name}-${var.environment}-uploads"
   force_destroy     = true
   versioning_status = "Enabled"
-  environment       = "dev"
+  environment       = var.environment
 }
 
 module "dynamodb" {
   source                         = "../../modules/dynamodb"
-  table_name                     = "devops360-dev-users"
+  table_name                     = "${var.project_name}-${var.environment}-users"
   billing_mode                   = "PAY_PER_REQUEST"
   hash_key                       = "user_id"
   hash_key_type                  = "S"
   point_in_time_recovery_enabled = true
-  environment                    = "dev"
+  environment                    = var.environment
 }
 
 module "cognito" {
   source                     = "../../modules/cognito"
-  user_pool_name             = "devops360-dev-userpool"
-  app_client_name            = "devops360-dev-appclient"
+  user_pool_name             = "${var.project_name}-${var.environment}-userpool"
+  app_client_name            = "${var.project_name}-${var.environment}-appclient"
   password_min_length        = 8
   password_require_lowercase = true
   password_require_numbers   = true
   password_require_symbols   = false
   password_require_uppercase = true
-  environment                = "dev"
+  environment                = var.environment
 }
 
 module "ecr" {
   source   = "../../modules/ecr"
-  ecr_name = "devops360-app"
+  ecr_name = "${var.project_name}-ecr"
 }
 
 # SSM Parameters for sharing outputs/configs
 module "ssm_s3_bucket_name" {
   source = "../../modules/ssm"
-  name   = "/devops360/dev/s3_bucket_name"
+  name   = "/${var.project_name}/${var.environment}/s3_bucket_name"
   value  = module.s3.bucket_name
   type   = "String"
-  tags   = { Name = "devops360-s3-bucket-name", Environment = "dev" }
+  tags   = { Name = "${var.project_name}-s3-bucket-name", Environment = "${var.environment}" }
 }
 
 module "ssm_cognito_user_pool_id" {
   source = "../../modules/ssm"
-  name   = "/devops360/dev/cognito_user_pool_id"
+  name   = "/${var.project_name}/${var.environment}/cognito_user_pool_id"
   value  = module.cognito.user_pool_id
   type   = "String"
-  tags   = { Name = "devops360-cognito-user-pool-id", Environment = "dev" }
+  tags   = { Name = "${var.project_name}-cognito-user-pool-id", Environment = "${var.environment}" }
 }
 
 module "ssm_dynamodb_table_name" {
   source = "../../modules/ssm"
-  name   = "/devops360/dev/dynamodb_table_name"
+  name   = "/${var.project_name}/${var.environment}/dynamodb_table_name"
   value  = module.dynamodb.table_name
   type   = "String"
-  tags   = { Name = "devops360-dynamodb-table-name", Environment = "dev" }
+  tags   = { Name = "${var.project_name}-dynamodb-table-name", Environment = "${var.environment}" }
 }
 
 module "ssm_vpc_id" {
   source = "../../modules/ssm"
-  name   = "/devops360/dev/vpc_id"
+  name   = "/${var.project_name}/${var.environment}/vpc_id"
   value  = module.vpc.vpc_id
   type   = "String"
-  tags   = { Name = "devops360-vpc-id", Environment = "dev" }
+  tags   = { Name = "${var.project_name}-vpc-id", Environment = "${var.environment}" }
 }
 
 module "ssm_public_subnet_id" {
   source = "../../modules/ssm"
-  name   = "/devops360/dev/public_subnet_id"
+  name   = "/${var.project_name}/${var.environment}/public_subnet_id"
   value  = module.vpc.public_subnet_ids[0]
   type   = "String"
-  tags   = { Name = "devops360-public-subnet-id", Environment = "dev" }
+  tags   = { Name = "${var.project_name}-public-subnet-id", Environment = "${var.environment}" }
 }
 
 module "ssm_private_subnet_id" {
   source = "../../modules/ssm"
-  name   = "/devops360/dev/private_subnet_id"
+  name   = "/${var.project_name}/${var.environment}/private_subnet_id"
   value  = module.vpc.private_subnet_ids[0]
   type   = "String"
-  tags   = { Name = "devops360-private-subnet-id", Environment = "dev" }
+  tags   = { Name = "${var.project_name}-private-subnet-id", Environment = "${var.environment}" }
 }
 
 module "ssm_cognito_user_pool_client_id" {
   source = "../../modules/ssm"
-  name   = "/devops360/dev/cognito_user_pool_client_id"
+  name   = "/${var.project_name}/${var.environment}/cognito_user_pool_client_id"
   value  = module.cognito.user_pool_client_id
   type   = "String"
-  tags   = { Name = "devops360-cognito-user-pool-client-id", Environment = "dev" }
+  tags   = { Name = "${var.project_name}-cognito-user-pool-client-id", Environment = "${var.environment}" }
 }
 
 module "ssm_cognito_client_secret_arn" {
   source = "../../modules/ssm"
-  name   = "/devops360/dev/cognito_client_secret_arn"
+  name   = "/${var.project_name}/${var.environment}/cognito_client_secret_arn"
   value  = module.secretsmanager.secret_arn
   type   = "String"
-  tags   = { Name = "devops360-cognito-client-secret-arn", Environment = "dev" }
+  tags   = { Name = "${var.project_name}-cognito-client-secret-arn", Environment = "${var.environment}" }
 }
 
 module "ssm_ecr_repository_url" {
   source = "../../modules/ssm"
-  name   = "/devops360/dev/ecr_repository_url"
+  name   = "/${var.project_name}/${var.environment}/ecr_repository_url"
   value  = module.ecr.repository_url
   type   = "String"
-  tags   = { Name = "devops360-ecr-repository-url", Environment = "dev" }
+  tags   = { Name = "${var.project_name}-ecr-repository-url", Environment = "${var.environment}" }
 }
 
 # Secrets Manager for Cognito client secret
 module "secretsmanager" {
   source = "../../modules/secretsmanager"
-  name   = "devops360/cognito"
+  name   = "${var.project_name}/cognito"
   secret_string = jsonencode({
     COGNITO_APP_CLIENT_SECRET = module.cognito.client_secret
     COGNITO_USER_POOL_ID      = module.cognito.user_pool_id
@@ -132,21 +133,21 @@ module "secretsmanager" {
   })
   recovery_window_in_days = 0
   description             = "Cognito app client secret for devops360"
-  tags                    = { Name = "devops360-cognito-client-secret", Environment = "dev" }
+  tags                    = { Name = "${var.project_name}-cognito-client-secret", Environment = "${var.environment}" }
 }
 
 module "eks" {
   source                   = "../../modules/eks"
-  cluster_name             = "devops360-dev-eks"
-  cluster_version          = "1.32"
-  instance_types           = ["t3.medium"]
+  cluster_name             = var.cluster_name
+  cluster_version          = var.cluster_version
+  instance_types           = var.instance_types
   vpc_id                   = module.vpc.vpc_id
   subnet_ids               = module.vpc.private_subnet_ids
   control_plane_subnet_ids = module.vpc.private_subnet_ids
-  min_size                 = 2
-  max_size                 = 4
-  desired_size             = 2
-  ami_type                 = "AL2_x86_64"
+  min_size                 = var.min_size
+  max_size                 = var.max_size
+  desired_size             = var.desired_size
+  ami_type                 = var.ami_type
   depends_on               = [module.vpc]
 }
 
@@ -164,9 +165,9 @@ module "alb" {
 module "k8s_app" {
   source = "../../modules/k8s-app"
 
-  app_name                    = "devops360-app"
-  service_type                = "NodePort"
-  image_name                  = "ortoledanoo/devops360-app:latest"
+  app_name                    = "${var.project_name}-app"
+  service_type                = var.service_type
+  image_name                  = var.image_name
   dynamodb_table_name         = module.dynamodb.table_name
   s3_bucket_name              = module.s3.bucket_name
   cognito_user_pool_id        = module.cognito.user_pool_id

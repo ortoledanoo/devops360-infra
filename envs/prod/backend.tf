@@ -1,5 +1,5 @@
-# envs/prod/backend.tf
-# Remote backend configuration for Terraform state (prod environment)
+# envs/dev/backend.tf
+# Remote backend configuration for Terraform state (dev environment)
 terraform {
   backend "s3" {
     bucket         = "ex4-or-toledano-bucket-tf" # S3 bucket for state
