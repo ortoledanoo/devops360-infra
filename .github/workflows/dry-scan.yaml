@@ -1,28 +1,31 @@
-name: terraform-dry-run
+name: Test DevOps360 Terraform Files
 
 on:
   push:
-    branches:
+    branches: 
       - developers
-  workflow_dispatch: {}
-
-permissions:
-  contents: read
-  id-token: write
 
 jobs:
-  terraform-dry-run:
-    runs-on: ubuntu-latest
+  terraform-plan:
+    runs-on: ubuntu-latest 
+    
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: hashicorp/setup-terraform@v3
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          terraform_version: 1.9.5
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
 
-      - name: Terraform Init
-        working-directory: terraform/envs/dev
-        run: terraform init -upgrade
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform init
+        working-directory: terraform/deployments/awscc/lab
+        run: terraform init
 
       - name: Terraform Plan
         working-directory: terraform/envs/dev
