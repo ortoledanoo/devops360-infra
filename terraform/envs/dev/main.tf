@@ -1,5 +1,4 @@
 # envs/dev/main.tf
-# Development environment: Compose all infrastructure modules with dev-specific values.
 
 module "vpc" {
   source               = "../../modules/vpc"

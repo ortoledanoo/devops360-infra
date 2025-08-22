@@ -27,3 +27,6 @@
 # Exclude any other secrets or local config
 *.secret
 *.env 
+
+# GitHub Actions
+!*.yaml
