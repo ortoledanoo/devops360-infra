@@ -24,7 +24,7 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform init
-        working-directory: terraform/deployments/awscc/lab
+        working-directory: tterraform/envs/dev
         run: terraform init
 
       - name: Terraform Plan

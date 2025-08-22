@@ -22,9 +22,9 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform init
-        working-directory: terraform/deployments/awscc/lab
+        working-directory: terraform/envs/dev
         run: terraform init
 
       - name: Terraform destroy
-        working-directory: terraform/deployments/awscc/lab
+        working-directory: terraform/envs/dev
         run: terraform destroy -auto-approve -input=false

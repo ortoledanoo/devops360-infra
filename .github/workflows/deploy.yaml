@@ -8,7 +8,7 @@ on:
 jobs:
   terraform-plan:
     runs-on: ubuntu-latest 
-    
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -24,13 +24,13 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform init
-        working-directory: terraform/deployments/awscc/lab
+        working-directory: terraform/envs/dev
         run: terraform init
 
       - name: Terraform plan
-        working-directory: terraform/deployments/awscc/lab
+        working-directory: terraform/envs/dev
         run: terraform plan -detailed-exitcode -no-color -input=false -out=${{ github.workspace }}/tfplan 2>&1
 
       - name: Terraform apply
-        working-directory: terraform/deployments/awscc/lab
+        working-directory: terraform/envs/dev
         run: terraform apply -input=false ${{ github.workspace }}/tfplan
