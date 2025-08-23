@@ -24,18 +24,12 @@ jobs:
       - name: Cache Terraform
         uses: actions/cache@v3
         with:
-          path: terraform/envs/dev/.terraform
-          key: ${{ runner.os }}-terraform-${{ hashFiles('terraform/**/.terraform.lock.hcl') }}
+          path: |
+            terraform/envs/dev/.terraform
+            terraform/envs/dev/.terraform.lock.hcl
+          key: ${{ runner.os }}-terraform-${{ hashFiles('terraform/envs/dev/.terraform.lock.hcl') }}
           restore-keys: |
             ${{ runner.os }}-terraform-
-
-      - name: Cache Terraform Providers
-        uses: actions/cache@v3
-        with:
-          path: ~/.terraform.d/plugin-cache
-          key: ${{ runner.os }}-terraform-providers-${{ hashFiles('terraform/**/.terraform.lock.hcl') }}
-          restore-keys: |
-            ${{ runner.os }}-terraform-providers-
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
