@@ -1,12 +1,16 @@
 name: Deploy DevOps360 Infrastructure
 
 on:
-  push:
-    branches: 
-      - main
+  workflow_dispatch:
+
+# Possible for auto-sync infrastucture to main branch
+#on:
+#  push:
+#    branches: 
+#      - main
 
 jobs:
-  terraform-plan:
+  terraform-apply:
     runs-on: ubuntu-latest 
 
     steps:
