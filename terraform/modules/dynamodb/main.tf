@@ -15,6 +15,11 @@ resource "aws_dynamodb_table" "user_profiles" {
     enabled = var.point_in_time_recovery_enabled
   }
 
+  server_side_encryption {
+    enabled     = true
+    kms_key_arn = var.kms_key_id
+  }
+
   tags = {
     Name        = var.table_name
     Environment = var.environment

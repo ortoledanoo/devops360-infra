@@ -81,4 +81,15 @@ variable "image_name" {
   type        = string
 }
 
+variable "aws_account_id" {
+  description = "AWS Account ID"
+  type        = string
+}
+
+variable "versioning_status" {
+  description = "S3 bucket versioning status"
+  type        = string
+  default     = "Enabled"
+}
+
 

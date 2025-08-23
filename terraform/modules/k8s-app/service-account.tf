@@ -11,16 +11,22 @@ resource "aws_iam_policy" "app_policy" {
         Action = [
           "secretsmanager:GetSecretValue"
         ]
-        Resource = "*"
+        Resource = "arn:aws:secretsmanager:${var.aws_region}:${var.aws_account_id}:secret:${var.project_name}/cognito*"
       },
       {
         Effect = "Allow"
         Action = [
           "s3:GetObject",
-          "s3:PutObject",
+          "s3:PutObject"
+        ]
+        Resource = "arn:aws:s3:::${var.s3_bucket_name}/*"
+      },
+      {
+        Effect = "Allow"
+        Action = [
           "s3:ListBucket"
         ]
-        Resource = "*"
+        Resource = "arn:aws:s3:::${var.s3_bucket_name}"
       },
       {
         Effect = "Allow"
@@ -28,7 +34,7 @@ resource "aws_iam_policy" "app_policy" {
           "dynamodb:PutItem",
           "dynamodb:GetItem"
         ]
-        Resource = "*"
+        Resource = "arn:aws:dynamodb:${var.aws_region}:${var.aws_account_id}:table/${var.dynamodb_table_name}"
       },
       {
         Effect = "Allow"
@@ -37,7 +43,7 @@ resource "aws_iam_policy" "app_policy" {
           "cognito-idp:InitiateAuth",
           "cognito-idp:ConfirmSignUp"
         ]
-        Resource = "*"
+        Resource = "arn:aws:cognito-idp:${var.aws_region}:${var.aws_account_id}:userpool/${var.cognito_user_pool_id}"
       }
     ]
   })

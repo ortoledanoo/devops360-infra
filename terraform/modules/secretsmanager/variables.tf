@@ -24,4 +24,10 @@ variable "tags" {
   description = "Tags to apply to the secret."
   type        = map(string)
   default     = {}
+}
+
+variable "kms_key_id" {
+  description = "KMS key ID for encrypting the secret. If not provided, AWS managed key will be used."
+  type        = string
+  default     = null
 } 

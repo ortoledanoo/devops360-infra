@@ -9,10 +9,19 @@ resource "aws_iam_policy" "load_balancer_controller_additional" {
         Effect = "Allow"
         Action = [
           "elasticloadbalancing:AddTags",
-          "elasticloadbalancing:RemoveTags",
+          "elasticloadbalancing:RemoveTags"
+        ]
+        Resource = [
+          "arn:aws:elasticloadbalancing:${var.aws_region}:${var.aws_account_id}:loadbalancer/*",
+          "arn:aws:elasticloadbalancing:${var.aws_region}:${var.aws_account_id}:targetgroup/*"
+        ]
+      },
+      {
+        Effect = "Allow"
+        Action = [
           "elasticloadbalancing:DeleteTargetGroup"
         ]
-        Resource = "*"
+        Resource = "arn:aws:elasticloadbalancing:${var.aws_region}:${var.aws_account_id}:targetgroup/*"
       }
     ]
   })

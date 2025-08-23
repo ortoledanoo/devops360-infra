@@ -159,6 +159,8 @@ module "alb" {
   cluster_endpoint                   = module.eks.cluster_endpoint
   cluster_certificate_authority_data = module.eks.cluster_certificate_authority_data
   oidc_provider_arn                  = module.eks.oidc_provider_arn
+  aws_region                         = var.region
+  aws_account_id                     = var.aws_account_id
   depends_on                         = [module.eks]
 }
 
@@ -174,6 +176,9 @@ module "k8s_app" {
   cognito_user_pool_client_id = module.cognito.user_pool_client_id
   cognito_secrets_arn         = module.secretsmanager.secret_arn
   oidc_provider_arn           = module.eks.oidc_provider_arn
+  aws_region                  = var.region
+  aws_account_id              = var.aws_account_id
+  project_name                = var.project_name
 
   depends_on = [module.alb]
 }

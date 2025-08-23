@@ -5,6 +5,7 @@ resource "aws_secretsmanager_secret" "this" {
   name                    = var.name
   recovery_window_in_days = var.recovery_window_in_days
   description             = var.description
+  kms_key_id              = var.kms_key_id
   tags                    = var.tags
 }
 

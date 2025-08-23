@@ -18,3 +18,4 @@ instance_types = ["t3.medium"]
 # App Variables
 service_type = "NodePort"
 image_name = "ortoledanoo/devops360-app:latest"
+aws_account_id = "585768175989"

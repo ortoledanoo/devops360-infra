@@ -4,6 +4,7 @@ on:
   push:
     branches: 
       - developers
+  workflow_dispatch:
 
 jobs:
   terraform-plan:
@@ -22,6 +23,9 @@ jobs:
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
+        
+      - name: Terraform security scan
+        uses: triat/terraform-security-scan@v3.2.0
 
       - name: Terraform init
         working-directory: terraform/envs/dev

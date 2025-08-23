@@ -43,4 +43,10 @@ variable "availability_zones" {
   description = "List of availability zones to use for subnets"
   type        = list(string)
   default     = ["il-central-1a", "il-central-1b"]
+}
+
+variable "kms_key_id" {
+  description = "KMS key ID for encrypting CloudWatch Log Groups. If not provided, AWS managed key will be used."
+  type        = string
+  default     = null
 } 

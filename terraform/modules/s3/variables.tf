@@ -16,4 +16,10 @@ variable "versioning_status" {
 variable "environment" {
   description = "Deployment environment (e.g., dev, staging, prod)."
   type        = string
+}
+
+variable "kms_key_id" {
+  description = "KMS key ID for encrypting the bucket. If not provided, AWS managed key will be used."
+  type        = string
+  default     = null
 } 
