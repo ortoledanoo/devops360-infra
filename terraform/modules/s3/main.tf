@@ -25,6 +25,23 @@ resource "aws_s3_bucket_public_access_block" "uploads" {
   restrict_public_buckets = true
 }
 
+resource "aws_s3_bucket_server_side_encryption_configuration" "uploads" {
+  bucket = aws_s3_bucket.uploads.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
+}
+
+resource "aws_s3_bucket_logging" "uploads" {
+  bucket = aws_s3_bucket.uploads.id
+
+  target_bucket = aws_s3_bucket.uploads.id
+  target_prefix = "logs/"
+}
+
 output "bucket_name" {
   value = aws_s3_bucket.uploads.bucket
 } 

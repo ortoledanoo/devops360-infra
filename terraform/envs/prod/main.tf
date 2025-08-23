@@ -174,6 +174,9 @@ module "k8s_app" {
   cognito_user_pool_client_id = module.cognito.user_pool_client_id
   cognito_secrets_arn         = module.secretsmanager.secret_arn
   oidc_provider_arn           = module.eks.oidc_provider_arn
+  aws_region                  = var.region
+  aws_account_id              = var.aws_account_id
+  project_name                = var.project_name
 
   depends_on = [module.alb]
 }

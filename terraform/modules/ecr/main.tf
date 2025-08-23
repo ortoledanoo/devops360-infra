@@ -1,6 +1,6 @@
 resource "aws_ecr_repository" "devops360-ecr" {
   name                 = var.ecr_name
-  image_tag_mutability = "MUTABLE"
+  image_tag_mutability = "IMMUTABLE"
   force_delete         = true
 
   image_scanning_configuration {
