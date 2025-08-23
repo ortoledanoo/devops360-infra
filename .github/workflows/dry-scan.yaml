@@ -4,6 +4,7 @@ on:
   push:
     branches: 
       - developers
+  workflow_dispatch:
 
 jobs:
   terraform-plan:
