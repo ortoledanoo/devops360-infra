@@ -24,12 +24,8 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         
-      - uses: kishaningithub/setup-tf-summarize@v1
-
-      - name: Print tf-summarize version and help
-        run: |
-          tf-summarize -v
-          tf-summarize -h
+      - name: Install tf-summarize
+        uses: kishaningithub/setup-tf-summarize@v1
 
       - name: tfsec
         uses: aquasecurity/tfsec-action@v1.0.0
@@ -42,7 +38,18 @@ jobs:
 
       - name: Terraform Plan
         working-directory: terraform/envs/dev
-        run: terraform plan -no-color -input=false -lock-timeout=5m
+        run: terraform plan -no-color -input=false -lock-timeout=5m -out=tfplan
+      
+      - name: Summarize plan
+        run: |
+          terraform show -json tfplan > tfplan.json
+          tf-summarize tfplan > summary.txt
+
+      - name: Upload summary Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tf-summary
+          path: summary.txt
 
 
         
