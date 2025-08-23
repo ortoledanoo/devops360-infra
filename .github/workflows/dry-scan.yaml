@@ -42,6 +42,7 @@ jobs:
       
       - name: Summarize plan
         run: |
+          cd terraform/envs/dev
           terraform show -json tfplan > tfplan.json
           tf-summarize tfplan > summary.txt
 
