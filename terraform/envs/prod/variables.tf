@@ -86,4 +86,10 @@ variable "aws_account_id" {
   type        = string
 }
 
+variable "versioning_status" {
+  description = "S3 bucket versioning status"
+  type        = string
+  default     = "Enabled"
+}
+
 

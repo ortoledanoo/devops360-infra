@@ -12,8 +12,8 @@ resource "aws_iam_policy" "load_balancer_controller_additional" {
           "elasticloadbalancing:RemoveTags"
         ]
         Resource = [
-          "arn:aws:elasticloadbalancing:*:*:loadbalancer/*",
-          "arn:aws:elasticloadbalancing:*:*:targetgroup/*"
+          "arn:aws:elasticloadbalancing:${var.aws_region}:${var.aws_account_id}:loadbalancer/*",
+          "arn:aws:elasticloadbalancing:${var.aws_region}:${var.aws_account_id}:targetgroup/*"
         ]
       },
       {
@@ -21,7 +21,7 @@ resource "aws_iam_policy" "load_balancer_controller_additional" {
         Action = [
           "elasticloadbalancing:DeleteTargetGroup"
         ]
-        Resource = "arn:aws:elasticloadbalancing:*:*:targetgroup/*"
+        Resource = "arn:aws:elasticloadbalancing:${var.aws_region}:${var.aws_account_id}:targetgroup/*"
       }
     ]
   })
