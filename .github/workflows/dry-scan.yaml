@@ -50,7 +50,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tf-summary
-          path: summary.txt
+          path: terraform/envs/dev/summary.txt
 
 
         
