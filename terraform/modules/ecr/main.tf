@@ -6,6 +6,11 @@ resource "aws_ecr_repository" "devops360-ecr" {
   image_scanning_configuration {
     scan_on_push = true
   }
+
+  encryption_configuration {
+    encryption_type = var.kms_key_id != null ? "KMS" : "AES256"
+    kms_key         = var.kms_key_id
+  }
 }
 
 output "repository_url" {

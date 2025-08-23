@@ -16,7 +16,8 @@ resource "aws_dynamodb_table" "user_profiles" {
   }
 
   server_side_encryption {
-    enabled = true
+    enabled     = true
+    kms_key_arn = var.kms_key_id
   }
 
   tags = {
